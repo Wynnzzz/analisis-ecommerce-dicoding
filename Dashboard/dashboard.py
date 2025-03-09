@@ -86,7 +86,7 @@ bystate_df = create_bystate_df(main_df)
 rfm_df = create_rfm_df(main_df)
 top_profitable_products=profitable_products_df(main_df)
 
-st.header('Dicoding Collection Dashboard :sparkles:')
+st.header('Dicoding Project Dashboard :sparkles:')
 
 st.subheader('Daily Orders')
  
