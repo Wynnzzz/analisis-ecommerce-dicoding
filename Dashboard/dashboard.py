@@ -18,6 +18,12 @@ def create_daily_orders_df(df):
     
     return daily_orders_df
 
+def create_daily_order(df):
+    order_days=df.groupby(df['order_purchase_timestamp'].dt.day_name())['order_id'].count().reset_index()
+    order_days.rename(columns={"order_id":"Total Orders", "order_purchase_timestamp": "Day"}, inplace=True)
+    order_days.sort_values(by='Total Orders', ascending=False)
+    return order_days
+
 def create_sum_order_items_df(df):
     sum_order_items_df = df.groupby("product_category_name_english").order_id.nunique().sort_values(ascending=False).reset_index()
     return sum_order_items_df
@@ -81,6 +87,7 @@ main_df = all_df[(all_df["order_purchase_timestamp"] >= str(start_date)) &
                 (all_df["order_purchase_timestamp"] <= str(end_date))]
 
 daily_orders_df = create_daily_orders_df(main_df)
+order_days=create_daily_order(main_df)
 sum_order_items_df = create_sum_order_items_df(main_df)
 bystate_df = create_bystate_df(main_df)
 rfm_df = create_rfm_df(main_df)
@@ -111,6 +118,19 @@ ax.plot(
 ax.tick_params(axis='y', labelsize=20)
 ax.tick_params(axis='x', labelsize=15)
  
+st.pyplot(fig)
+ 
+st.subheader("Daily Order Distribution")
+
+fig, ax = plt.subplots(figsize=(14,6))
+colors = ["#72BCD4"] + ["#D3D3D3"] * (len(order_days) - 1)  # Pewarnaan hanya untuk bar pertama
+sns.barplot(x='Day', y='Total Orders', data=order_days.sort_values(by='Total Orders', ascending=False), palette=colors, ax=ax)
+
+ax.set_title("Daily Order Distribution", loc="center", fontsize=15)
+ax.set_ylabel("Total Orders")
+ax.set_xlabel("Day")
+ax.tick_params(axis='x', labelsize=12)
+
 st.pyplot(fig)
 
 st.subheader("Best & Worst Performing Product")
