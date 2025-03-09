@@ -54,7 +54,7 @@ def profitable_products_df(df):
     
     return top_profitable_products
 
-all_df = pd.read_csv("Dashboard\main_data.csv")
+all_df = pd.read_csv("Dashboard/main_data.csv")
 
 datetime_columns = ["order_purchase_timestamp", 'order_delivered_carrier_date', 'order_approved_at', 'order_delivered_customer_date', 'order_estimated_delivery_date', 'shipping_limit_date', 'review_creation_date', 'review_answer_timestamp']
 all_df.sort_values(by="order_purchase_timestamp", inplace=True)
